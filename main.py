@@ -1,0 +1,3 @@
+import MainFrame
+
+MainFrame.runSRAR()
