@@ -191,3 +191,9 @@ def addToDB():
             break
     print()
     print("We are done with the database.")
+    print()
+
+def readDBOut(idx):
+    DB = sql.connect(pathDB())
+    DBCur = DB.cursor()
+    return DBCur.execute("SELECT * FROM 'persons' WHERE id=" + str(idx)).fetchone()
