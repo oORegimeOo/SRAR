@@ -1,34 +1,30 @@
 import cv2
 import DataBase as DB
+import SeenPeople as SP
+import Style
 
 def startCamFeed():
-    faceRec = [0, 0, 0, 0] #Rect [x,y,w,h]
-    text = None
-    font = cv2.FONT_HERSHEY_SIMPLEX
-    fontScale = .75
-    fontColor = (255, 255, 0)
+    person = SP.Person()
     feed = openCamFeed()
     while True:
         ret, frame = feed.read()
         face = faceDetection(frame)
         if len(face) > 0:
             for (x, y, w, h) in face:
-                if abs(faceRec[0] - x) > 20:
-                    faceRec[0] = x
-                    faceRec[2] = w
-                if abs(faceRec[1] - y) > 20:
-                    faceRec[1] = y
-                    faceRec[3] = h
-        cv2.rectangle(frame, (faceRec[0], faceRec[1]), (faceRec[0] + faceRec[2], faceRec[1] + faceRec[3]), (0, 255, 0), 2)
+                if abs(person.getX() - x) > 20:
+                    person.setX(x)
+                    person.setW(w)
+                if abs(person.getY() - y) > 20:
+                    person.setY(y)
+                    person.setH(h)
+        #cv2.rectangle(frame, (faceRec[0], faceRec[1]), (faceRec[0] + faceRec[2], faceRec[1] + faceRec[3]), (0, 255, 0), 2)
         qrcode = detectionOfQRCodeInPicture(frame)
         if qrcode is not None:
             if "SRAR_id_" in qrcode:
-                text = DB.readDBOut(qrcode[8:]) #text (id, given name, surname, age, job)
-        if text is not None:
-            upperLine = str(text[1]) + " " + str(text[2]) + ", " + str(text[3])
-            lowerLine = str(text[4])
-            cv2.putText(frame, upperLine, (faceRec[0]+int(faceRec[2]/2)-(14*int(len(upperLine)/2)), faceRec[1]), font, fontScale, fontColor)
-            cv2.putText(frame, lowerLine, (faceRec[0]+int(faceRec[2]/2)-(14*int(len(lowerLine)/2)), faceRec[1]+faceRec[3]), font, fontScale, fontColor)
+                person.proofNewPerson(DB.readDBOut(qrcode[8:]))
+        if person.getIdx() is not None:
+            cv2.putText(frame, person.getUpperText(), (person.getX()+int(person.getW()/2)-(14*int(len(person.getUpperText())/2)), person.getY()), Style.getFont(), Style.getScale(), Style.getColor())
+            cv2.putText(frame, person.getLowerText(), (person.getX()+int(person.getW()/2)-(14*int(len(person.getLowerText())/2)), person.getY()+person.getH()), Style.getFont(), Style.getScale(), Style.getColor())
         cv2.imshow('frame', frame)
         if cv2.waitKey(1) == ord('q'):
             break
