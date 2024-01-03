@@ -1,5 +1,5 @@
 import cv2
-import DataBase as DB
+from Server import DataBase as DB
 import SeenPeople as SP
 import Style
 

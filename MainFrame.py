@@ -1,5 +1,6 @@
 import CameraFeed as Cam
-import DataBase as DB
+from Server import DataBase as DB
+
 
 def runSRAR():
     print("Program started!")
