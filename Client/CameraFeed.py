@@ -2,7 +2,6 @@ import cv2
 import Client.Client as Client
 import Client.SeenPeople as SP
 import Client.Style as Style
-import time
 
 def startCamFeed():
     person = SP.Person()
