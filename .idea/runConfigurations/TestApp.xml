@@ -1,0 +1,7 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="TestApp" type="CompoundRunConfigurationType">
+    <toRun name="mainClient" type="PythonConfigurationType" />
+    <toRun name="mainServer" type="PythonConfigurationType" />
+    <method v="2" />
+  </configuration>
+</component>

@@ -31,7 +31,7 @@ def startDB():
     addToDB()
 
 def pathDBDir():
-    return join(getcwd(), join("Data", "Database"))
+    return join(getcwd(), join("Server", join("Data", "Database")))
 
 def pathDB():
     return join(pathDBDir(), "SRAR.db")

@@ -1,5 +1,6 @@
 import socket
-import DataBase as DB
+import Server.DataBase as DB
+import time
 
 
 def server_program():
@@ -23,20 +24,16 @@ def server_program():
 
         # receive data stream. it won't accept data packet greater than 1024 bytes
         data = conn.recv(1024).decode()
-        print("Data received: " + data)
+        #print("Data received: " + data)
         if data == "end":
             conn.send("Connection is terminated!".encode())
             conn.close()  # close the connection
             break
 
         data = DB.readDBOut(int(data))
-        print(data)
+        #print(data)
         for d in data:
             conn.send((str(d)+";").encode())  # send data to the client
         conn.send("done".encode())
-        print("Data send!")
+        #print("Data send!")
     print("Server closed!")
-
-
-if __name__ == '__main__':
-    server_program()

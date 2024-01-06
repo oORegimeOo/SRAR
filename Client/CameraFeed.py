@@ -1,7 +1,8 @@
 import cv2
-from Server import DataBase as DB
-import SeenPeople as SP
-import Style
+import Client.Client as Client
+import Client.SeenPeople as SP
+import Client.Style as Style
+import time
 
 def startCamFeed():
     person = SP.Person()
@@ -21,13 +22,21 @@ def startCamFeed():
         qrcode = detectionOfQRCodeInPicture(frame)
         if qrcode is not None:
             if "SRAR_id_" in qrcode:
-                person.proofNewPerson(DB.readDBOut(qrcode[8:]))
+                person.proofNewPerson(Client.client_program(qrcode[8:]))
+            if "SRAR_end" in qrcode:
+                print("")
+                print("Termination send!")
+                print("")
+                print(Client.client_program(qrcode[5:]))
+                break
         if person.getIdx() is not None:
             cv2.putText(frame, person.getUpperText(), (person.getX()+int(person.getW()/2)-(14*int(len(person.getUpperText())/2)), person.getY()), Style.getFont(), Style.getScale(), Style.getColor())
             cv2.putText(frame, person.getLowerText(), (person.getX()+int(person.getW()/2)-(14*int(len(person.getLowerText())/2)), person.getY()+person.getH()), Style.getFont(), Style.getScale(), Style.getColor())
         cv2.imshow('frame', frame)
         if cv2.waitKey(1) == ord('q'):
             break
+    print("")
+    print("Client closed.")
 
 def openCamFeed():
     return cv2.VideoCapture(chooseCamera(findOnlineCamera()))
@@ -39,7 +48,7 @@ def chooseCamera(allCameraIDXAvailable):
     cam = None
     for IDX in allCameraIDXAvailable:
         cap = cv2.VideoCapture(IDX)
-        print("Camera feed of cam " + str(IDX) + ".")
+        #print("Camera feed of cam " + str(IDX) + ".")
         while True:
             ret, frame = cap.read()
             cv2.imshow('frame', frame)
