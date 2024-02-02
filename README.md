@@ -13,3 +13,5 @@ Eventuell kann am Ende auch ein Overlay über einzelne Parts der User gelegt wer
 
 Größte Herausforderung wird das identifizieren der einzelnen User im Blickfeld sein.
 Ideen: GPS für grobe Umgebung, Bluetooth (siehe Entfernungsmessung CoronaApp) für nähere Umgebung, Gesichtserkennung / Merkmalserkennung fürs Blickfeld
+
+Im Vordergrund steht der Lernprozess, der beim Programmieren des Programms erzielt wird. Ein lauffähiges Programm wird trotzdem angestrebt.
